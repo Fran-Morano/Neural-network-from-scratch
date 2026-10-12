@@ -1,0 +1,2 @@
+This a proyect where I am trying to build a neural network from scracth, the main purpose of it is learinig how do neural network work and improbve in my coding skills.
+The two main folders are src and experiments, in experiments I will have the files where I test out ideas and understan how things work, and in src is where I will implement the fully tested out ideas.
