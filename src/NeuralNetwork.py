@@ -9,13 +9,29 @@ class Dense_layer:
     def forward (self, inputs):
         #calculate output values
         self.output = np.dot(inputs, self.weights) + self.biases
+        self.inputs = inputs
 
+    # Backward pass
+    def backward(self, dvalues):
+        # Gradients on parameters
+        self.dweights = np.dot(self.inputs.T, dvalues)
+        self.dbiases = np.sum(dvalues, axis=0, keepdims=True)
+        # Gradient on values
+        self.dinputs = np.dot(dvalues, self.weights.T)
 
 
 class Activation_ReLU:
     def forward(self, inputs):
         #calculates outputs values from inputs
         self.output = np.maximum(0, inputs)
+        self.inputs = inputs
+
+    def backward(self, dvalues):
+        #since we need to modify the original variable, let's make a copy of the values first
+        self.dinputs = dvalues.copy()
+        #zero gradient where the dvalues are negative
+        self.dinputs[self.dinputs <=0] = 0
+    
 
 
 
@@ -62,3 +78,17 @@ class Loss_CategoricalCrossentropy(Loss): #cross entropy loss
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
         
+
+    def backward(self, dvalues, y_true):  #backward pass
+        samples = len(dvalues) #amount of samples
+
+        labels = len(dvalues[0]) #amount of labels for each sample
+
+        #if labels are sparse turn them into 1-hot vectors
+        if len(y_true.shape) == 1:
+            y_true = np.eye(labels)[y_true]
+
+        #calculate gradients
+        self.dinputs = -y_true/dvalues
+        #normalize the gradient
+        self.dinputs = self.dinputs/samples
