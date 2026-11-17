@@ -30,7 +30,7 @@ class Activation_ReLU:
         #since we need to modify the original variable, let's make a copy of the values first
         self.dinputs = dvalues.copy()
         #zero gradient where the dvalues are negative
-        self.dinputs[self.dinputs <=0] = 0
+        self.dinputs[self.inputs <=0] = 0
     
 
 
@@ -139,3 +139,17 @@ class Activation_Softmax_Loss_CategoricalCrossentropy():
         self.dinputs[range(samples), y_true] -= 1
         # Normalize gradient
         self.dinputs = self.dinputs / samples
+
+
+class Optimizer_SGD:
+
+    #Initizlize optimizer - set settings, learning rate of 1. is default for this optimzer
+    def __init__(self, learning_rate=1.0):
+        self.learning_rate = learning_rate
+
+    #Update parameters
+    def update_params(self, layer):
+        layer.weights += -self.learning_rate * layer.dweights
+        layer.biases += -self.learning_rate * layer.dbiases
+    
+    
