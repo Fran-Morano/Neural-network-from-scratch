@@ -23,7 +23,7 @@ dense2 = Dense_layer(64, 3)
 loss_activation = Activation_Softmax_Loss_CategoricalCrossentropy()
 
 # Create optimizer
-optimizer = Optimizer_SGD()
+optimizer = Optimizer_SGD(learning_rate= 1. ,decay = 0.001, momentum = 0.85)
 
 # Train in loop
 for epoch in range(10001):
