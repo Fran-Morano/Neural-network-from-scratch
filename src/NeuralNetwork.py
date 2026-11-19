@@ -51,12 +51,12 @@ class Activation_Softmax:
 
         #enumerate outputs and gradients
         for index, (single_output,single_dvalues) in enumerate(zip(self.output,dvalues)):
-                #flatten output array
-                single_output = single_output.reshape(-1, 1)
-                #calculate jacobian matriz of the output
-                jacobian_matrix = np.diagflat(single_output) - np.dot(single_output, single_output.T)
-                #calculate sample-wise gradient and add it to the array of sample gradientes
-                self.dinputs[index] = np.dot(jacobian_matrix, single_dvalues)
+            #flatten output array
+            single_output = single_output.reshape(-1, 1)
+            #calculate jacobian matriz of the output
+            jacobian_matrix = np.diagflat(single_output) - np.dot(single_output, single_output.T)
+            #calculate sample-wise gradient and add it to the array of sample gradientes
+            self.dinputs[index] = np.dot(jacobian_matrix, single_dvalues)
 
 class Loss: #common loss class
     #calculates the data and regularization losses given model output and ground truth values
@@ -169,7 +169,7 @@ class Optimizer_SGD:
             #Build weight updates with momentum 
             #Take previous updates multiplied by the retain factor and update with current gradients
             weight_updates = self.momentum * layer.weight_momentums - self.current_learning_rate * layer.dweights
-            layer.weights_momentums = weight_updates
+            layer.weight_momentums = weight_updates
 
             #Build biases updates
             bias_updates = self.momentum * layer.bias_momentums - self.current_learning_rate * layer.dbiases
